@@ -25,6 +25,10 @@
 	{
 		deleteMsg($_POST);
 	}
+	elseif (isset($_POST['action']) && $_POST['action'] == 'deleteCmt')
+	{
+		deleteCmt($_POST);
+	}
 	else
 	{
 		session_destroy();
@@ -123,12 +127,17 @@ function post_comment($post, $session)
 
 function deleteMsg($post)
 {
-	$query0 = "SET FOREIGN_KEY_CHECKS=0";
+	$query0 = "DELETE FROM comments WHERE messages_id = '{$post['message_id']}'";
 	$query1 = "DELETE FROM messages WHERE id ='{$post['message_id']}';";
-	$query2 = "SET FOREIGN_KEY_CHECKS=1";
 	run_mysql_query($query0);
 	run_mysql_query($query1);
-	run_mysql_query($query2);
+	header('location: main.php');
+}
+
+function deleteCmt($post)
+{
+	$query = "DELETE FROM comments WHERE messages_id = '{$post['message_id']}'";
+	run_mysql_query($query);
 	header('location: main.php');
 }
 
