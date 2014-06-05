@@ -4,7 +4,7 @@
 	if (empty($_SESSION['first_name']))
 	{
 		header('location: index.php');
-		die;
+		die();
 	}
 ?>
 
@@ -36,41 +36,39 @@
 		<?php
 
 		$query = "SELECT * FROM users JOIN messages ON users.id = messages.users_id ORDER BY messages.created_at DESC";
-		$query2 = "SELECT * FROM comments JOIN users ON comments.users_id = users.id ORDER BY comments.created_at ASC";
-		$message = fetch_all($query);
-		$comment = fetch_all($query2);
-		foreach ($message as $value)
+		$messages = fetch_all($query);
+		foreach ($messages as $message)
 		{
-			echo "<p class='user'> {$value['first_name']} {$value['last_name']} {$value['created_at']} </br>";
-			echo "<p class='message'> {$value['message']}</p>"; 
-			if ($_SESSION['user_id'] === $value['users_id'])
+			echo "<p class='user'> {$message['first_name']} {$message['last_name']} {$message['created_at']} </br>";
+			echo "<p class='message'> {$message['message']}</p>"; 
+			if ($_SESSION['user_id'] === $message['users_id'])
 			{ ?>
 				<div id='deleteMsg'>
 					<form action="process.php" method="post">
 						<input type='hidden' name='action' value='deleteMsg'>
-						<input type='hidden' name='message_id' value=<?php echo $value['id']; ?>>
+						<input type='hidden' name='message_id' value=<?php echo $message['id']; ?>>
 						<input type='submit' value='delete'>
-					</form>
+					</form> 
 				</div>
 			<?php }
 
+			$query = "SELECT * FROM users JOIN comments ON comments.users_id = users.id WHERE comments.messages_id = '{$message['id']}'";
+			$comment = fetch_all($query);
 			foreach ($comment as $com)
 			{
-				if ($value['id'] === $com['messages_id'])
-				{
-					echo "<p class='userComment'> {$com['first_name']} {$com['last_name']} {$com['created_at']} </br>";
-					echo "<p class='comment'> {$com['comment']} </br></p>";
-					if ($_SESSION['user_id'] === $com['users_id'])
+				echo "<p class='userComment'> {$com['first_name']} {$com['last_name']} {$com['created_at']} </br>";
+				echo "<p class='comment'> {$com['comment']} </br></p>";
+				if ($_SESSION['user_id'] === $com['users_id'])
 					{ ?>
 						<div id='deleteCmt'>
 							<form action="process.php" method="post">
 								<input type='hidden' name='action' value='deleteCmt'>
-								<input type='hidden' name='message_id' value=<?php echo $value['id']; ?>>
+								<input type='hidden' name='message_id' value=<?php echo $com['id']; ?>>
+								<input type='hidden' name='user_id' value=<?php echo $message['users_id']; ?>>
 								<input type='submit' value='delete'>
 							</form>
 						</div> <?php
 					}
-				}
 
 			}
 		?>
@@ -79,7 +77,7 @@
 		<div id='comments'>
 			<form action="process.php" method="post">
 				<input type='hidden' name='action' value='comment'>
-				<input type='hidden' name='comment_id' value=<?php echo $value['id']; ?>>
+				<input type='hidden' name='comment_id' value=<?php echo $message['id']; ?>>
 				<textarea rows="4" cols="20" name='message'></textarea><br>
 				<input type='submit' value='comment'>
 			</form>

@@ -87,8 +87,9 @@ function register_user($post)
 
 function login_user($post)
 {
+	$email = escape_this_string($post['email']);
 	$query = "SELECT * FROM users WHERE users.password = '{$post['password']}' 
-				AND users.email = '{$post['email']}'";
+				AND users.email = '{$email}'";
 	$user = fetch_all($query);
 	if (count($user) > 0)
 	{
@@ -102,6 +103,7 @@ function login_user($post)
 	{
 		$_SESSION['errors'][] = "Username does not exist";
 		header('location: index.php');
+		die();
 	}
 
 }
@@ -113,6 +115,7 @@ function post_message($post, $session)
 			VALUES('{$session['user_id']}','{$message}', NOW(), NOW())";
 	run_mysql_query($query);
 	header('location: main.php');
+	die();
 }
 
 function post_comment($post, $session)
@@ -122,7 +125,7 @@ function post_comment($post, $session)
 			VALUES('{$post['comment_id']}','{$session['user_id']}','{$message}', NOW(), NOW())";
 	run_mysql_query($query);
 	header('location: main.php');
-
+	die();
 }
 
 function deleteMsg($post)
@@ -132,13 +135,15 @@ function deleteMsg($post)
 	run_mysql_query($query0);
 	run_mysql_query($query1);
 	header('location: main.php');
+	die();
 }
 
 function deleteCmt($post)
 {
-	$query = "DELETE FROM comments WHERE messages_id = '{$post['message_id']}'";
+	$query = "DELETE FROM comments WHERE id = '{$post['message_id']}';";
 	run_mysql_query($query);
 	header('location: main.php');
+	die();
 }
 
 

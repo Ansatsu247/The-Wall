@@ -29,7 +29,7 @@ session_start();
 		<input type='hidden' name='action' value='register'>
 		First name: <input type='text' name='first_name'><br>
 		Last name: <input type='text' name='last_name'><br>
-		Email Address: <input type='text' name='email'><br>
+		Email Address: <input type='email' name='email'><br>
 		Password: <input type='password' name='password'><br>
 		Confirm Password: <input type='password' name='confirmPass'><br>
 		<input type='submit' value='register'>	
@@ -41,10 +41,12 @@ session_start();
 		foreach ($_SESSION['errors'] as $err) {
 			echo "<p class='error'> {$err} </p>";
 		 }
+		 unset($_SESSION['errors']);
 	}
 	if (isset($_SESSION['success']))
 	{
 		echo "<p class='success'> {$_SESSION['success']} </p>";
+		unset($_SESSION['success']);
 	}
 
 	?>
@@ -61,9 +63,3 @@ session_start();
 	
 </body>
 </html>
-
-<?php
-
-session_destroy();
-
-?>
