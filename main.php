@@ -1,7 +1,11 @@
 <?php
-	
 	session_start();
 	require('new-connection.php');
+	if (empty($_SESSION['first_name']))
+	{
+		header('location: index.php');
+		die;
+	}
 ?>
 
 
@@ -32,7 +36,7 @@
 		<?php
 
 		$query = "SELECT * FROM users JOIN messages ON users.id = messages.users_id ORDER BY messages.created_at DESC";
-		$query2 = "SELECT * FROM comments JOIN users ON comments.users_id = users.id ORDER BY comments.created_at DESC";
+		$query2 = "SELECT * FROM comments JOIN users ON comments.users_id = users.id ORDER BY comments.created_at ASC";
 		$message = fetch_all($query);
 		$comment = fetch_all($query2);
 		foreach ($message as $value)
