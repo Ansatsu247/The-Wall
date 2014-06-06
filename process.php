@@ -29,6 +29,14 @@
 	{
 		deleteCmt($_POST);
 	}
+	elseif (isset($_POST['action']) && $_POST['action'] == 'editMsg')
+	{
+		editMsg($_POST);
+	}
+	elseif (isset($_POST['action']) && $_POST['action'] == 'editCmt')
+	{
+		editCmt($_POST);
+	} 
 	else
 	{
 		session_destroy();
@@ -145,6 +153,29 @@ function deleteCmt($post)
 	header('location: main.php');
 	die();
 }
+
+function editMsg($post)
+{
+	$message = escape_this_string($post['editMsg']);
+	$query = "UPDATE messages
+			SET message = '{$message}'
+			WHERE id = '{$post['message_id']}'";
+	run_mysql_query($query);
+	header('location: main.php');
+	die();
+}
+
+function editCmt($post)
+{
+	$comment = escape_this_string($post['editCmt']);
+	$query = "UPDATE comments
+			SET comment = '{$comment}'
+			WHERE id = '{$post['comment_id']}'";
+	run_mysql_query($query);
+	header('location: main.php');
+	die();
+}
+
 
 
 

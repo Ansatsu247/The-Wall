@@ -1,3 +1,8 @@
+* {
+	background-color: #add8e6;
+}
+
+
 #header {
 	border-style: solid;
 	border-width: 1px;
@@ -67,6 +72,18 @@
 }
 
 #deleteCmt
+{
+	margin-left: 30px;
+	display: inline-block;
+}
+
+#editMsg
+{
+	margin-left: 30px;
+	display: inline-block;
+}
+
+#editCmt
 {
 	margin-left: 30px;
 	display: inline-block;

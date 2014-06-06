@@ -43,6 +43,12 @@
 			echo "<p class='message'> {$message['message']}</p>"; 
 			if ($_SESSION['user_id'] === $message['users_id'])
 			{ ?>
+				<div id='editMsg'>
+					<form action="edit.php" method="post">
+						<input type='hidden' name='message_id' value=<?php echo $message['id']; ?>>
+						<input type='submit' value='edit'>
+					</form> 
+				</div>
 				<div id='deleteMsg'>
 					<form action="process.php" method="post">
 						<input type='hidden' name='action' value='deleteMsg'>
@@ -60,6 +66,12 @@
 				echo "<p class='comment'> {$com['comment']} </br></p>";
 				if ($_SESSION['user_id'] === $com['users_id'])
 					{ ?>
+						<div id='editCmt'>
+							<form action="edit.php" method="post">
+								<input type='hidden' name='comment_id' value=<?php echo $com['id']; ?>>
+								<input type='submit' value='edit'>
+							</form> 
+						</div>
 						<div id='deleteCmt'>
 							<form action="process.php" method="post">
 								<input type='hidden' name='action' value='deleteCmt'>
